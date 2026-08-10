@@ -15,6 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/game.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -132,13 +133,32 @@
   }
   .role .quiet { color: var(--muted); }
 
+  .signal-wrap {
+    position: relative;
+    margin-top: 34px;
+    height: 44px;
+    overflow: hidden;
+    transition: height 0.6s cubic-bezier(0.65, 0, 0.35, 1), background 0.4s ease;
+    border-radius: 0;
+  }
+  .signal-wrap.is-game {
+    border-radius: 10px;
+    background: var(--paper);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+
   .signal {
     display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 44px;
-    margin-top: 34px;
     overflow: visible;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
   }
+  .signal .hit { pointer-events: all; }
   .signal path {
     fill: none;
     stroke: var(--accent);
@@ -307,10 +327,13 @@
       Founding engineer at <a href="https://trayo.ai">Trayo</a>.
       <span class="quiet">Before that, one of two engineers who built Salesforce&rsquo;s <a href="https://www.salesforce.com/agentforce/">Agentforce</a> from the ground up.</span>
     </p>
-    <svg class="signal" viewBox="0 0 660 44" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M8 22 L200 22 L240 22 L248 19 L256 25 L262 22 L292 22 L300 12 L308 32 L316 22 L352 22 L360 9 L368 35 L376 22 L414 22 L422 7 L430 37 L438 22 L478 22 L486 6 L494 38 L502 22 L544 22 L552 6 L560 38 L568 22 L612 22 L620 6 L628 38 L636 22 L660 22"/>
-      <circle cx="4" cy="22" r="3.2"/>
-    </svg>
+    <div id="signalWrap" class="signal-wrap">
+      <svg id="signalSvg" class="signal" viewBox="0 0 660 44" preserveAspectRatio="none" aria-hidden="true">
+        <rect class="hit" x="0" y="0" width="660" height="44" fill="transparent"/>
+        <path id="signalPath" d="M8 22 L200 22 L240 22 L248 19 L256 25 L262 22 L292 22 L300 12 L308 32 L316 22 L352 22 L360 9 L368 35 L376 22 L414 22 L422 7 L430 37 L438 22 L478 22 L486 6 L494 38 L502 22 L544 22 L552 6 L560 38 L568 22 L612 22 L620 6 L628 38 L636 22 L660 22"/>
+        <circle cx="4" cy="22" r="3.2"/>
+      </svg>
+    </div>
   </header>
 
   <section id="about">
@@ -387,5 +410,114 @@
   </footer>
 
 </div>
+
+<script>
+(function () {
+  var path = document.getElementById('signalPath');
+  var svg = document.getElementById('signalSvg');
+  var wrap = document.getElementById('signalWrap');
+  if (!path || !svg || !wrap) return;
+
+  var pts = [];
+  (path.getAttribute('d').match(/[ML]\s*[\d.\-]+\s+[\d.\-]+/g) || []).forEach(function (tok) {
+    var m = tok.match(/([ML])\s*([\d.\-]+)\s+([\d.\-]+)/);
+    pts.push({ cmd: m[1], x: parseFloat(m[2]), y0: parseFloat(m[3]) });
+  });
+
+  function buildPath(t) {
+    var eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    var d = '';
+    pts.forEach(function (p, i) {
+      var y = p.y0 + (22 - p.y0) * eased;
+      d += (i === 0 ? 'M' : ' L') + p.x + ' ' + y.toFixed(2);
+    });
+    return d;
+  }
+
+  function animatePath(fromT, toT, dur, onDone) {
+    var start = null;
+    function step(ts) {
+      if (!start) start = ts;
+      var p = Math.min(1, (ts - start) / dur);
+      path.setAttribute('d', buildPath(fromT + (toT - fromT) * p));
+      if (p < 1) requestAnimationFrame(step);
+      else if (onDone) onDone();
+    }
+    requestAnimationFrame(step);
+  }
+
+  var actxLite = null;
+  function chargeTone(rising) {
+    try {
+      actxLite = actxLite || new (window.AudioContext || window.webkitAudioContext)();
+      var c = actxLite, t = c.currentTime;
+      var osc = c.createOscillator(), gain = c.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(rising ? 220 : 700, t);
+      osc.frequency.linearRampToValueAtTime(rising ? 900 : 180, t + 0.7);
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.exponentialRampToValueAtTime(0.045, t + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.7);
+      osc.connect(gain);
+      gain.connect(c.destination);
+      osc.start(t);
+      osc.stop(t + 0.75);
+    } catch (e) {}
+  }
+
+  var gameScriptPromise = null;
+  function preloadGame() {
+    if (gameScriptPromise) return gameScriptPromise;
+    gameScriptPromise = new Promise(function (resolve) {
+      var s = document.createElement('script');
+      s.src = 'assets/game.js';
+      s.onload = resolve;
+      document.body.appendChild(s);
+    });
+    return gameScriptPromise;
+  }
+
+  var clicks = 0;
+  var triggered = false;
+  var gameHandle = null;
+
+  function openGame() {
+    var w = wrap.getBoundingClientRect().width;
+    var targetH = Math.max(210, Math.min(380, w * 0.5));
+    wrap.classList.add('is-game');
+    wrap.style.height = targetH + 'px';
+    svg.style.opacity = '0';
+    preloadGame().then(function () {
+      gameHandle = window.__oferGame.start(wrap, {
+        onRequestClose: closeGame,
+        onCoins: function () {}
+      });
+    });
+  }
+
+  function closeGame() {
+    if (gameHandle) { gameHandle.stop(); gameHandle = null; }
+    wrap.classList.remove('is-game');
+    wrap.style.height = '44px';
+    svg.style.opacity = '1';
+    chargeTone(false);
+    animatePath(1, 0, 800, function () {
+      clicks = 0;
+      triggered = false;
+    });
+  }
+
+  svg.addEventListener('click', function () {
+    if (triggered) return;
+    clicks++;
+    if (clicks === 2) preloadGame();
+    if (clicks >= 5) {
+      triggered = true;
+      chargeTone(true);
+      animatePath(0, 1, 900, openGame);
+    }
+  });
+})();
+</script>
 </body>
 </html>
