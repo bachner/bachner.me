@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ofer Bachner</title>
+<meta name="description" content="Founding engineer at Trayo. Ex-Salesforce, one of two engineers behind Agentforce. Builder of PopDraft and YCD Alchemist.">
+<meta property="og:title" content="Ofer Bachner">
+<meta property="og:description" content="Founding engineer at Trayo. From idea to product.">
+<meta property="og:image" content="https://bachner.me/assets/ofer.jpg">
+<meta property="og:url" content="https://bachner.me">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://bachner.me/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M2 20 L10 20 L14 6 L18 27 L22 20 L30 20' fill='none' stroke='%230B7A52' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Ofer Bachner",
+  "url": "https://bachner.me",
+  "image": "https://bachner.me/assets/ofer.jpg",
+  "email": "ofer@bachner.me",
+  "jobTitle": "Founding Engineer",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Trayo",
+    "url": "https://trayo.ai"
+  },
+  "alumniOf": {
+    "@type": "CollegeOrUniversity",
+    "name": "Ben-Gurion University of the Negev"
+  },
+  "sameAs": [
+    "https://github.com/bachner",
+    "https://www.linkedin.com/in/ofer-bachner/"
+  ]
+}
+</script>
+<style>
+  :root {
+    --paper: #FCFCFA;
+    --ink: #23221D;
+    --muted: #6F6B61;
+    --accent: #0B7A52;
+    --line: #E5E3DB;
+    --serif: 'Newsreader', Georgia, 'Times New Roman', serif;
+    --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #171612;
+      --ink: #E9E7DF;
+      --muted: #97927F;
+      --accent: #52C695;
+      --line: #2B2A24;
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 660px;
+    margin: 0 auto;
+    padding: 0 24px 96px;
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  a:hover { text-decoration-thickness: 2px; }
+  a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* ---------- header ---------- */
+
+  header {
+    padding-top: clamp(56px, 12vh, 128px);
+    animation: rise 0.7s ease both;
+  }
+
+  .id-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .photo {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  h1 {
+    font-size: clamp(34px, 7vw, 46px);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+  }
+
+  .heb {
+    font-size: 16px;
+    color: var(--muted);
+    margin-top: 4px;
+    text-align: left;
+  }
+
+  .role {
+    margin-top: 22px;
+    font-size: 21px;
+    line-height: 1.5;
+  }
+  .role .quiet { color: var(--muted); }
+
+  .signal {
+    display: block;
+    width: 100%;
+    height: 44px;
+    margin-top: 34px;
+    overflow: visible;
+  }
+  .signal path {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1200;
+    stroke-dashoffset: 1200;
+    animation: draw 2.4s ease-out 0.4s forwards;
+  }
+  .signal circle {
+    fill: var(--accent);
+    opacity: 0;
+    animation: appear 0.5s ease 0.4s forwards;
+  }
+
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes appear { to { opacity: 1; } }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    header { animation: none; }
+    .signal path { animation: none; stroke-dashoffset: 0; }
+    .signal circle { animation: none; opacity: 1; }
+  }
+
+  /* ---------- sections ---------- */
+
+  section { margin-top: 72px; }
+  #about { margin-top: 52px; }
+
+  .label {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 26px;
+  }
+  .label svg {
+    width: 22px;
+    height: 12px;
+    stroke: var(--accent);
+    fill: none;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  p + p { margin-top: 1em; }
+
+  /* ---------- timeline ---------- */
+
+  .timeline { list-style: none; }
+  .timeline li {
+    display: grid;
+    grid-template-columns: 128px 1fr;
+    gap: 16px;
+    padding: 11px 0;
+    border-top: 1px solid var(--line);
+    font-size: 17px;
+  }
+  .timeline li:last-child { border-bottom: 1px solid var(--line); }
+  .timeline .years {
+    font-family: var(--mono);
+    font-size: 13.5px;
+    color: var(--muted);
+    padding-top: 3px;
+    white-space: nowrap;
+  }
+  .timeline .what strong { font-weight: 600; }
+  .timeline .what span { color: var(--muted); }
+
+  @media (max-width: 480px) {
+    .timeline li { grid-template-columns: 1fr; gap: 2px; }
+  }
+
+  /* ---------- projects ---------- */
+
+  .project { margin-top: 44px; }
+  .project:first-of-type { margin-top: 0; }
+
+  .project h3 {
+    font-size: 26px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .project h3 a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .project h3 a:hover { color: var(--accent); }
+  .project h3 .arrow {
+    font-size: 18px;
+    color: var(--accent);
+    margin-left: 6px;
+  }
+
+  .tagline {
+    font-style: italic;
+    color: var(--muted);
+    margin: 6px 0 14px;
+  }
+
+  .meta {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 14px;
+  }
+  .meta a { color: var(--muted); }
+  .meta a:hover { color: var(--accent); }
+
+  /* ---------- also / footer ---------- */
+
+  .also { list-style: none; }
+  .also li {
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
+    font-size: 17px;
+  }
+  .also li:last-child { border-bottom: 1px solid var(--line); }
+
+  footer {
+    margin-top: 88px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 28px;
+    align-items: baseline;
+  }
+  footer a {
+    font-family: var(--mono);
+    font-size: 14px;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  footer a:hover { color: var(--accent); }
+  footer .sig {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="id-row">
+      <img class="photo" src="assets/ofer.jpg" alt="Ofer Bachner" width="76" height="76">
+      <div>
+        <h1>Ofer Bachner</h1>
+        <div class="heb" lang="he" dir="rtl">עופר בכנר</div>
+      </div>
+    </div>
+    <p class="role">
+      Founding engineer at <a href="https://trayo.ai">Trayo</a>.
+      <span class="quiet">Before that, one of two engineers who built Salesforce&rsquo;s <a href="https://www.salesforce.com/agentforce/">Agentforce</a> from the ground up.</span>
+    </p>
+    <svg class="signal" viewBox="0 0 660 44" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M8 22 L200 22 L240 22 L248 19 L256 25 L262 22 L292 22 L300 12 L308 32 L316 22 L352 22 L360 9 L368 35 L376 22 L414 22 L422 7 L430 37 L438 22 L478 22 L486 6 L494 38 L502 22 L544 22 L552 6 L560 38 L568 22 L612 22 L620 6 L628 38 L636 22 L660 22"/>
+      <circle cx="4" cy="22" r="3.2"/>
+    </svg>
+  </header>
+
+  <section id="about">
+    <p>I have been building software for about fifteen years. The part I love most is the start: a new technology, an empty repo, a product that does not exist yet. From idea to product.</p>
+    <p>I started in cybersecurity at HP, working on threat intelligence products like ArcSight and ThreatCentral. I taught systems to spot attack patterns inside oceans of security events, and filed patents along the way.</p>
+    <p>Then eight years at Salesforce. In January 2023 a hackathon project grew into what is now <a href="https://www.salesforce.com/agentforce/">Agentforce</a>, the company&rsquo;s flagship AI product. Two engineers built it from the ground up, and I was one of them, leading backend and infrastructure. It was <a href="https://www.salesforce.com/news/press-releases/2023/09/12/salesforce-platform-news-dreamforce/">announced at Dreamforce 2023</a> under its first name, Einstein Copilot, and it serves millions of CRM users across every Salesforce cloud. Our team earned the FY24 President&rsquo;s Award, and the <a href="https://www.salesforce.com/il/blog/einstein-co-pilot/">Salesforce blog told our story</a>.</p>
+    <p>In late 2025 I left to be a founding engineer at <a href="https://trayo.ai">Trayo</a>. We build an AI platform that watches buying signals across target accounts, so sales teams show up at the right moment instead of three weeks late.</p>
+    <p>I live in Israel with my family. I studied computer science at Ben-Gurion University, hold three US patents, and volunteer with <a href="https://appleseeds.org.il/en/">Appleseeds</a>, a nonprofit that opens tech careers to people far from the industry.</p>
+  </section>
+
+  <section id="work">
+    <div class="label">
+      <svg viewBox="0 0 22 12" aria-hidden="true"><path d="M1 6 L7 6 L10 1 L13 11 L16 6 L21 6"/></svg>
+      Work
+    </div>
+    <ul class="timeline">
+      <li>
+        <div class="years">2025 &ndash; now</div>
+        <div class="what"><strong>Trayo</strong> <span>&middot; founding engineer</span></div>
+      </li>
+      <li>
+        <div class="years">2018 &ndash; 2026</div>
+        <div class="what"><strong>Salesforce</strong> <span>&middot; principal software engineer. Built Agentforce from a hackathon.</span></div>
+      </li>
+      <li>
+        <div class="years">2012 &ndash; 2018</div>
+        <div class="what"><strong>HP / HPE</strong> <span>&middot; security research, then architect. ArcSight, ThreatCentral.</span></div>
+      </li>
+      <li>
+        <div class="years">2009 &ndash; 2012</div>
+        <div class="what"><strong>Ben-Gurion University</strong> <span>&middot; BSc, computer science</span></div>
+      </li>
+    </ul>
+  </section>
+
+  <section id="projects">
+    <div class="label">
+      <svg viewBox="0 0 22 12" aria-hidden="true"><path d="M1 6 L7 6 L10 1 L13 11 L16 6 L21 6"/></svg>
+      Open source
+    </div>
+
+    <div class="project">
+      <h3><a href="https://github.com/bachner/PopDraft">PopDraft<span class="arrow">&#8599;</span></a></h3>
+      <p class="tagline">An AI writing assistant that lives everywhere on macOS.</p>
+      <p>I write in English all day and it is not my first language. I kept pasting text into chat windows to fix it, then pasting it back. That loop got old fast. PopDraft removes it. Select text in any app, press Option Space, and a small menu pops up near the cursor: fix grammar, make it clearer, draft a reply, read it aloud. It can run fully local through llama.cpp, so your words never leave the machine.</p>
+      <p class="meta">Swift &middot; macOS &middot; <a href="https://github.com/bachner/PopDraft">github.com/bachner/PopDraft</a></p>
+    </div>
+
+    <div class="project">
+      <h3><a href="https://github.com/bachner/YCD-Alchemist">YCD Alchemist<span class="arrow">&#8599;</span></a></h3>
+      <p class="tagline">Brings playlists from an old YCD music system back to life on Spotify.</p>
+      <p>YCD is a file format from an old in-store music system. Years of carefully picked songs, many of them Hebrew, sat locked in files nothing modern could open. So I wrote a parser for the format and a matcher that hunts each track down on Spotify and scores how confident it is in every match. Hebrew track names do not match cleanly, and that is where most of the work went. The playlists play again.</p>
+      <p class="meta">JavaScript &middot; React &middot; <a href="https://github.com/bachner/YCD-Alchemist">github.com/bachner/YCD-Alchemist</a></p>
+    </div>
+  </section>
+
+  <section id="also">
+    <div class="label">
+      <svg viewBox="0 0 22 12" aria-hidden="true"><path d="M1 6 L7 6 L10 1 L13 11 L16 6 L21 6"/></svg>
+      Also
+    </div>
+    <ul class="also">
+      <li>Three US patents, from <a href="https://patents.google.com/patent/US11182476B2/en">threat intelligence correlation</a> to <a href="https://patents.google.com/patent/US11556851B2/en">matching people with machine learning</a>. <a href="https://patents.justia.com/inventor/ofer-bachner">Full list</a></li>
+      <li><a href="http://h41382.www4.hpe.com/gfs-shared/downloads-210.pdf">Published research</a> on heuristic threat pattern detection and parsing threat reports at HP.</li>
+      <li>Trayo&rsquo;s launch post: <a href="https://www.trayo.ai/blog/introducing-first-ai-native-signal-platform/">Introducing the First AI-Native Signal Platform</a>.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <a href="https://github.com/bachner">GitHub</a>
+    <a href="https://www.linkedin.com/in/ofer-bachner/">LinkedIn</a>
+    <a href="mailto:ofer@bachner.me">ofer@bachner.me</a>
+    <span class="sig">bachner.me</span>
+  </footer>
+
+</div>
+</body>
+</html>
