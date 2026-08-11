@@ -395,6 +395,7 @@
         animFrame = FRAMES.win;
         stopBgLoop();
         sfx.fanfare(true);
+        if (window.gtag) gtag('event', 'easter_egg_win', { coins_collected: coinCount });
         setTimeout(function () {
           var closeFn = ui.close;
           var el = document.querySelector('.ofer-game-winbar');

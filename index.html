@@ -1,6 +1,14 @@
 <!doctype html>
 <html lang="en">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RPTX4LMHD5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RPTX4LMHD5');
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ofer Bachner</title>
@@ -477,9 +485,17 @@
     return gameScriptPromise;
   }
 
+  function ga(name, params) {
+    if (window.gtag) gtag('event', name, params || {});
+  }
+
   var clicks = 0;
   var triggered = false;
   var gameHandle = null;
+  var lastCoins = 0;
+  var openedAt = 0;
+
+  var GROW_MS = 600;
 
   function openGame() {
     var w = wrap.getBoundingClientRect().width;
@@ -487,20 +503,30 @@
     wrap.classList.add('is-game');
     wrap.style.height = targetH + 'px';
     svg.style.opacity = '0';
-    preloadGame().then(function () {
+    lastCoins = 0;
+    openedAt = Date.now();
+    ga('easter_egg_discovered');
+    var boxGrown = new Promise(function (resolve) { setTimeout(resolve, GROW_MS); });
+    Promise.all([preloadGame(), boxGrown]).then(function () {
+      if (!wrap.classList.contains('is-game')) return;
       gameHandle = window.__oferGame.start(wrap, {
         onRequestClose: closeGame,
-        onCoins: function () {}
+        onCoins: function (n) { lastCoins = n; }
       });
     });
   }
 
   function closeGame() {
+    if (!wrap.classList.contains('is-game')) return;
     if (gameHandle) { gameHandle.stop(); gameHandle = null; }
     wrap.classList.remove('is-game');
     wrap.style.height = '44px';
     svg.style.opacity = '1';
     chargeTone(false);
+    ga('easter_egg_closed', {
+      coins_collected: lastCoins,
+      seconds_played: Math.round((Date.now() - openedAt) / 1000)
+    });
     animatePath(1, 0, 800, function () {
       clicks = 0;
       triggered = false;
