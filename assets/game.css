@@ -4,6 +4,8 @@
   line-height: 0;
   opacity: 0;
   animation: ofer-stage-in 0.35s ease forwards;
+  -webkit-user-select: none;
+  user-select: none;
 }
 @keyframes ofer-stage-in {
   from { opacity: 0; }
@@ -16,6 +18,7 @@
   height: 100%;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
+  touch-action: none;
 }
 
 .ofer-game-corner {
@@ -35,6 +38,10 @@
   padding: 2px 8px;
   cursor: pointer;
   line-height: 1.7;
+  min-width: 32px;
+  min-height: 32px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 .ofer-game-btn:hover { border-color: var(--accent); color: var(--accent); }
 
@@ -69,19 +76,23 @@
 }
 .ofer-game-hint.is-hidden { opacity: 0; }
 
-.ofer-touch { position: absolute; bottom: 10px; display: none; gap: 8px; }
-.ofer-touch-left { left: 10px; }
-.ofer-touch-right { right: 10px; }
+.ofer-touch { position: absolute; bottom: 8px; display: none; gap: 10px; }
+.ofer-touch-left { left: 8px; }
+.ofer-touch-right { right: 8px; }
 .ofer-touch button {
-  width: 38px;
-  height: 38px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.4);
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.3);
   color: #fff;
-  font-size: 14px;
+  font-size: 16px;
   -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
+.ofer-touch button:active { background: rgba(0, 0, 0, 0.5); }
 @media (hover: none) and (pointer: coarse) {
   .ofer-touch { display: flex; }
 }
@@ -94,6 +105,9 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  max-width: calc(100% - 16px);
+  box-sizing: border-box;
+  white-space: nowrap;
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: 30px;
@@ -108,10 +122,16 @@
   from { opacity: 0; transform: translate(-50%, 10px); }
   to { opacity: 1; transform: translate(-50%, 0); }
 }
+.ofer-game-winbar span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
 .ofer-game-cta {
   background: var(--accent);
   color: #fff;
   border-color: var(--accent);
+  flex-shrink: 0;
 }
 .ofer-game-cta:hover { opacity: 0.9; color: #fff; }
 

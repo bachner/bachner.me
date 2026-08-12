@@ -134,10 +134,12 @@
     });
 
     var keys = {};
+    var JUMP_KEYS = ['ArrowUp', 'w', ' '];
     function onKeyDown(e) {
       if (e.key === 'Escape') { requestClose(); return; }
       if (['ArrowLeft', 'ArrowRight', 'ArrowUp', ' ', 'a', 'd', 'w'].indexOf(e.key) !== -1) e.preventDefault();
       keys[e.key] = true;
+      if (JUMP_KEYS.indexOf(e.key) !== -1) keys.__jumpQueued = true;
     }
     function onKeyUp(e) { keys[e.key] = false; }
     window.addEventListener('keydown', onKeyDown);
@@ -145,7 +147,7 @@
 
     stage.querySelectorAll('.ofer-touch button').forEach(function (btn) {
       var k = btn.getAttribute('data-k');
-      var down = function (ev) { ev.preventDefault(); keys['touch_' + k] = true; };
+      var down = function (ev) { ev.preventDefault(); keys['touch_' + k] = true; if (k === 'jump') keys.__jumpQueued = true; };
       var up = function (ev) { ev.preventDefault(); keys['touch_' + k] = false; };
       btn.addEventListener('touchstart', down, { passive: false });
       btn.addEventListener('touchend', up, { passive: false });
@@ -298,7 +300,7 @@
       /* PLAY */
       var left = keys('ArrowLeft', 'a', 'touch_left');
       var right = keys('ArrowRight', 'd', 'touch_right');
-      var jumpKey = keys('ArrowUp', 'w', ' ', 'touch_jump');
+      var jumpKey = keys('ArrowUp', 'w', ' ', 'touch_jump') || ui.keys.__jumpQueued;
 
       var speed = 250;
       player.vx = 0;
@@ -310,6 +312,7 @@
         player.grounded = false;
         sfx.jump();
       }
+      ui.keys.__jumpQueued = false;
 
       player.vy += 1700 * dt;
       player.x += player.vx * dt;
@@ -400,6 +403,7 @@
           var closeFn = ui.close;
           var el = document.querySelector('.ofer-game-winbar');
           if (el) return;
+          document.querySelectorAll('.ofer-touch').forEach(function (t) { t.style.display = 'none'; });
           var bar = document.createElement('div');
           bar.className = 'ofer-game-winbar';
           bar.innerHTML = '<span>' + coinCount + ' collected. shipped it. &#127881;</span>' +
@@ -413,8 +417,11 @@
       camX += (Math.max(0, Math.min(levelWidth - W, targetCam)) - camX) * Math.min(1, dt * 6);
     }
 
-    function keys(a, b, c) {
-      return !!(ui.keys[a] || ui.keys[b] || ui.keys[c]);
+    function keys() {
+      for (var i = 0; i < arguments.length; i++) {
+        if (ui.keys[arguments[i]]) return true;
+      }
+      return false;
     }
 
     function draw() {
